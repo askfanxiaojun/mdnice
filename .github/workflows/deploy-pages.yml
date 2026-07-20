@@ -1,0 +1,50 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare static site
+        run: |
+          unzip -q mdnice.zip 'mdnice/*' -d _site_archive
+          mkdir site
+          cp -R _site_archive/mdnice/. site/
+          find site -name .DS_Store -delete
+          sed -i 's#href="/favicon.svg"#href="./favicon.svg"#; s#href="/manifest.json"#href="./manifest.json"#' site/index.html
+          touch site/.nojekyll
+          test -f site/index.html
+          test -f site/static/js/main.a00dbce4.chunk.js
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
