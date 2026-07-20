@@ -35,10 +35,18 @@ jobs:
           sed -i 's#href="/favicon.svg"#href="./favicon.svg"#; s#href="/manifest.json"#href="./manifest.json"#' site/index.html
           sed -i 's#const e="/service-worker.js"#const e="./service-worker.js"#' site/static/js/main.a00dbce4.chunk.js
           sed -i 's#registerNavigationRoute("/index.html"#registerNavigationRoute("./index.html"#' site/service-worker.js
+          mv site/static/js/main.a00dbce4.chunk.js site/static/js/main.pages.a00dbce4.chunk.js
+          mv site/static/js/main.a00dbce4.chunk.js.map site/static/js/main.pages.a00dbce4.chunk.js.map
+          sed -i 's#main\.a00dbce4\.chunk#main.pages.a00dbce4.chunk#g' \
+            site/index.html \
+            site/asset-manifest.json \
+            site/precache-manifest.fda800f77db33dcef87340ef8d827809.js \
+            site/static/js/main.pages.a00dbce4.chunk.js \
+            site/static/js/main.pages.a00dbce4.chunk.js.map
           touch site/.nojekyll
           test -f site/index.html
-          test -f site/static/js/main.a00dbce4.chunk.js
-          grep -q 'const e="./service-worker.js"' site/static/js/main.a00dbce4.chunk.js
+          test -f site/static/js/main.pages.a00dbce4.chunk.js
+          grep -q 'const e="./service-worker.js"' site/static/js/main.pages.a00dbce4.chunk.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
