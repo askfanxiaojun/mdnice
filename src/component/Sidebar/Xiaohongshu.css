@@ -1,0 +1,16 @@
+.nice-btn-xiaohongshu {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.nice-btn-xiaohongshu-icon {
+  padding: 4px;
+  width: 30px;
+  height: 30px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.nice-btn-xiaohongshu:hover .nice-btn-xiaohongshu-icon {
+  filter: drop-shadow(0 4px 8px rgba(255, 36, 66, 0.28));
+  transform: translateY(-1px);
+}

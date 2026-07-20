@@ -11,6 +11,7 @@ import Smile from "./Smile";
 import Mobile from "./Mobile";
 import PC from "./PC";
 import Wechat from "./Wechat";
+import Xiaohongshu from "./Xiaohongshu";
 import Zhihu from "./Zhihu";
 import Juejin from "./Juejin";
 import Close from "./Close";
@@ -42,6 +43,8 @@ export default (props) => {
       return <Mobile {...props} />;
     case "wechat":
       return <Wechat {...props} />;
+    case "xiaohongshu":
+      return <Xiaohongshu {...props} />;
     case "zhihu":
       return <Zhihu {...props} />;
     case "juejin":

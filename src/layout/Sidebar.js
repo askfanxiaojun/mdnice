@@ -4,6 +4,7 @@ import classnames from "classnames";
 
 import PreviewType from "../component/Sidebar/PreviewType";
 import Wechat from "../component/Sidebar/Wechat";
+import Xiaohongshu from "../component/Sidebar/Xiaohongshu";
 import Zhihu from "../component/Sidebar/Zhihu";
 import Juejin from "../component/Sidebar/Juejin";
 import "./Sidebar.css";
@@ -21,6 +22,7 @@ class Sidebar extends Component {
     return (
       <div className={niceSidebarClass}>
         <Wechat />
+        <Xiaohongshu />
         <Zhihu />
         <Juejin />
         <PreviewType />
