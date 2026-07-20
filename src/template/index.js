@@ -20,6 +20,7 @@ import fullStackBlue from "./markdown/fullStackBlue";
 
 import nightPurple from "./markdown/nightPurple";
 import extremeBlack from "./markdown/extremeBlack";
+import customBlue from "./markdown/customBlue";
 
 import content from "./content.md";
 
@@ -63,6 +64,7 @@ export default {
     fullStackBlue,
     nightPurple,
     extremeBlack,
+    customBlue,
   },
   code: {
     atomOneDark,

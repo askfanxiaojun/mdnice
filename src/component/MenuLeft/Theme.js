@@ -36,20 +36,30 @@ class Theme extends React.Component {
 
     const mdMenu = (
       <Menu onClick={this.changeTemplate}>
-        {TEMPLATE_OPTIONS.map((option, index) => (
-          <Menu.Item key={index}>
-            <div id={`nice-menu-theme-${option.id}`} className="nice-themeselect-theme-item">
-              <span>
-                <span className="nice-themeselect-theme-item-flag">
-                  {templateNum === index && <span>{RIGHT_SYMBOL}</span>}
+        {TEMPLATE_OPTIONS.map((option, index) => ({option, index}))
+          .sort((first, second) => {
+            if (first.option.id === "custom") {
+              return 1;
+            }
+            if (second.option.id === "custom") {
+              return -1;
+            }
+            return 0;
+          })
+          .map(({option, index}) => (
+            <Menu.Item key={index}>
+              <div id={`nice-menu-theme-${option.id}`} className="nice-themeselect-theme-item">
+                <span>
+                  <span className="nice-themeselect-theme-item-flag">
+                    {templateNum === index && <span>{RIGHT_SYMBOL}</span>}
+                  </span>
+                  <span className="nice-themeselect-theme-item-name">{option.name}</span>
+                  {option.isNew && <span className="nice-themeselect-theme-item-new">new</span>}
                 </span>
-                <span className="nice-themeselect-theme-item-name">{option.name}</span>
-                {option.isNew && <span className="nice-themeselect-theme-item-new">new</span>}
-              </span>
-              <span className="nice-themeselect-theme-item-author">{option.author}</span>
-            </div>
-          </Menu.Item>
-        ))}
+                <span className="nice-themeselect-theme-item-author">{option.author}</span>
+              </div>
+            </Menu.Item>
+          ))}
         <Menu.Divider />
         <li className="nice-themeselect-menu-item">
           <div id="nice-menu-view-css" className="nice-themeselect-theme-item" onClick={this.toggleStyleEditor}>

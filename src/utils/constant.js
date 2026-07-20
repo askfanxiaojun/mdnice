@@ -150,9 +150,16 @@ export const TEMPLATE_OPTIONS = [
     name: "自定义",
     author: "",
   },
+  {
+    id: "customBlue",
+    name: "蓝色",
+    author: "隔壁樊同学",
+    isNew: true,
+  },
 ];
 
-export const TEMPLATE_CUSTOM_NUM = TEMPLATE_OPTIONS.length - 1;
+export const TEMPLATE_CUSTOM_NUM = TEMPLATE_OPTIONS.findIndex((option) => option.id === "custom");
+export const DEFAULT_TEMPLATE_NUM = TEMPLATE_OPTIONS.findIndex((option) => option.id === "customBlue");
 
 export const CODE_OPTIONS = [
   {

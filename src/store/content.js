@@ -5,6 +5,7 @@ import {
   TEMPLATE_OPTIONS,
   TEMPLATE_NUM,
   TEMPLATE_CUSTOM_NUM,
+  DEFAULT_TEMPLATE_NUM,
   MARKDOWN_THEME_ID,
   BASIC_THEME_ID,
   STYLE_LABELS,
@@ -58,19 +59,16 @@ if (!window.localStorage.getItem(STYLE)) {
   window.localStorage.setItem(STYLE, TEMPLATE.style.custom);
 }
 
-const templateNum = parseInt(window.localStorage.getItem(TEMPLATE_NUM), 10);
+const storedTemplateNum = parseInt(window.localStorage.getItem(TEMPLATE_NUM), 10);
+const templateNum = Number.isNaN(storedTemplateNum) ? DEFAULT_TEMPLATE_NUM : storedTemplateNum;
 
 // 用于处理刷新后的信息持久化
 // 属于自定义主题则从localstorage中读数据
 if (templateNum === TEMPLATE_CUSTOM_NUM) {
   store.style = window.localStorage.getItem(STYLE);
 } else {
-  if (templateNum) {
-    const {id} = TEMPLATE_OPTIONS[templateNum];
-    store.style = TEMPLATE.style[id];
-  } else {
-    store.style = TEMPLATE.style.normal;
-  }
+  const {id} = TEMPLATE_OPTIONS[templateNum];
+  store.style = TEMPLATE.style[id];
 }
 
 // 在head中添加style标签

@@ -1,6 +1,7 @@
 import {observable, action} from "mobx";
 import {
   TEMPLATE_NUM,
+  DEFAULT_TEMPLATE_NUM,
   CODE_NUM,
   CODE_THEME_ID,
   CODE_OPTIONS,
@@ -83,7 +84,7 @@ const store = new Navbar();
 
 // 如果为空先把数据放进去
 if (!window.localStorage.getItem(TEMPLATE_NUM)) {
-  window.localStorage.setItem(TEMPLATE_NUM, 0);
+  window.localStorage.setItem(TEMPLATE_NUM, DEFAULT_TEMPLATE_NUM);
 }
 
 // 如果为空先把数据放进去
