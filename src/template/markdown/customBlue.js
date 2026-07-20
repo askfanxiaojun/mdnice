@@ -22,6 +22,10 @@ export default `/* 全局属性
 
 /* 一级标题 */
 #nice h1 {
+  color: #000000;
+  text-align: center;
+  border-bottom: 2px solid rgba(15, 76, 129, 1);
+  padding-bottom: 8px;
 }
 
 /* 一级标题内容 */
@@ -75,12 +79,24 @@ export default `/* 全局属性
  * list-style-type: square|circle|disc;
  */
 #nice ul {
+  box-sizing: border-box;
+  margin: 10px 0;
+  padding: 10px 14px 10px 36px;
+  border: 1px solid rgba(15, 76, 129, 0.08);
+  border-radius: 5px;
+  background: rgba(15, 76, 129, 0.05);
 }
 
 /* 有序列表整体样式
  * list-style-type: upper-roman|lower-greek|lower-alpha;
  */
 #nice ol {
+  box-sizing: border-box;
+  margin: 10px 0;
+  padding: 10px 14px 10px 36px;
+  border: 1px solid rgba(15, 76, 129, 0.08);
+  border-radius: 5px;
+  background: rgba(15, 76, 129, 0.05);
 }
 
 /* 列表内容，不要设置li
@@ -94,7 +110,7 @@ export default `/* 全局属性
  */
 #nice blockquote {
   border-left-color: rgba(15, 76, 129, 1);
-  background: #fff9f9;
+  background: rgba(15, 76, 129, 0.08);
 }
 
 /* 引用文字 */
@@ -111,6 +127,8 @@ export default `/* 全局属性
 
 /* 加粗 */
 #nice strong {
+  color: rgba(15, 76, 129, 1);
+  font-weight: bold;
 }
 
 /* 斜体 */
