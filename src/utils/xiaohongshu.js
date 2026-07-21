@@ -3,7 +3,7 @@ import {toBlob} from "html-to-image";
 
 export const PAGE_WIDTH = 360;
 export const PAGE_HEIGHT = 600;
-export const PAGE_MARGIN = 20;
+export const PAGE_MARGIN = 14;
 export const PAGE_CONTENT_WIDTH = PAGE_WIDTH - PAGE_MARGIN * 2;
 export const PAGE_CONTENT_HEIGHT = PAGE_HEIGHT - PAGE_MARGIN * 2;
 export const MAX_IMAGE_HEIGHT = 500;
@@ -53,6 +53,7 @@ export const PAGED_EXPORT_CSS = `
 
 #nice .nice-xhs-cover {
   --xhs-cover-accent: #b98a44;
+  --xhs-cover-font: Optima-Regular, Optima, "PingFang SC", serif;
   position: relative;
   box-sizing: border-box;
   min-height: 246px;
@@ -63,9 +64,9 @@ export const PAGED_EXPORT_CSS = `
 
 #nice .nice-xhs-cover:before {
   position: absolute;
-  top: -20px;
-  right: -20px;
-  left: -20px;
+  top: -${PAGE_MARGIN}px;
+  right: -${PAGE_MARGIN}px;
+  left: -${PAGE_MARGIN}px;
   height: 13px;
   background: color-mix(in srgb, var(--xhs-cover-accent) 14%, #fff 86%);
   content: "";
@@ -77,7 +78,7 @@ export const PAGED_EXPORT_CSS = `
   justify-content: space-between;
   margin: 0 5px 9px;
   color: color-mix(in srgb, var(--xhs-cover-accent) 72%, #55412f 28%);
-  font-family: Avenir Next, Futura, sans-serif;
+  font-family: var(--xhs-cover-font) !important;
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 1.8px;
@@ -126,7 +127,7 @@ export const PAGED_EXPORT_CSS = `
   color: #24160c !important;
   background: transparent !important;
   border: 0 !important;
-  font-family: "Songti SC", STSong, "Noto Serif CJK SC", serif !important;
+  font-family: var(--xhs-cover-font) !important;
   font-size: 38px !important;
   font-weight: 800 !important;
   letter-spacing: -1.2px !important;
@@ -159,7 +160,7 @@ export const PAGED_EXPORT_CSS = `
   gap: 8px;
   margin: 13px 5px 0;
   color: color-mix(in srgb, var(--xhs-cover-accent) 72%, #55412f 28%);
-  font-family: "Songti SC", STSong, serif;
+  font-family: var(--xhs-cover-font) !important;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1px;

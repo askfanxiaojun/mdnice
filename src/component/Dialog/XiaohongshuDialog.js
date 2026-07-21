@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import {observer, inject} from "mobx-react";
-import {Button, message} from "antd";
+import {Button, message, Select} from "antd";
 import {Previewer} from "pagedjs";
 
 import {
   BASIC_THEME_ID,
   CODE_THEME_ID,
   FONT_THEME_ID,
+  FONT_OPTIONS,
   LAYOUT_ID,
   MARKDOWN_THEME_ID,
   TEMPLATE_OPTIONS,
@@ -126,12 +127,14 @@ class XiaohongshuDialog extends Component {
       });
 
       const template = TEMPLATE_OPTIONS[this.props.navbar.templateNum];
+      const fontOption = FONT_OPTIONS[this.props.navbar.fontNum] || FONT_OPTIONS[0];
       this.snapshot = {
         html: clone.innerHTML,
         css: this.collectStyles(),
         imageMeta,
         title,
         accentColor: this.getThemeAccent(layout),
+        fontFamily: fontOption.family || window.getComputedStyle(layout).fontFamily,
       };
       this.setState(
         {
@@ -186,6 +189,7 @@ class XiaohongshuDialog extends Component {
     const cover = document.createElement("header");
     cover.className = "nice-xhs-cover";
     cover.style.setProperty("--xhs-cover-accent", this.snapshot.accentColor);
+    cover.style.setProperty("--xhs-cover-font", this.snapshot.fontFamily);
     const meta = document.createElement("div");
     meta.className = "nice-xhs-cover-meta";
     meta.textContent = "专题文章 · 01";
@@ -357,6 +361,18 @@ class XiaohongshuDialog extends Component {
     this.setState({imageSizes: {}}, this.paginate);
   };
 
+  changeFont = (fontNum) => {
+    if (this.state.isPreparing || this.state.isExporting || !this.snapshot) {
+      return;
+    }
+    this.props.navbar.setFontNum(fontNum);
+    const layout = document.getElementById(LAYOUT_ID);
+    const fontOption = FONT_OPTIONS[fontNum] || FONT_OPTIONS[0];
+    this.snapshot.fontFamily = fontOption.family || window.getComputedStyle(layout).fontFamily;
+    this.snapshot.css = this.collectStyles();
+    this.paginate();
+  };
+
   getExportPages = () =>
     Array.from(this.renderTarget.querySelectorAll(".pagedjs_page")).map((page) => page.querySelector(".pagedjs_sheet"));
 
@@ -437,6 +453,23 @@ class XiaohongshuDialog extends Component {
             <strong>{pageCount || "—"}</strong>
           </div>
           <div className="nice-xhs-actions">
+            <label className="nice-xhs-font-control" htmlFor="nice-xhs-font-select">
+              <span>字体</span>
+              <Select
+                id="nice-xhs-font-select"
+                value={this.props.navbar.fontNum}
+                disabled={isPreparing || isExporting}
+                dropdownClassName="nice-xhs-font-dropdown"
+                dropdownMatchSelectWidth={false}
+                onChange={this.changeFont}
+              >
+                {FONT_OPTIONS.map((option, index) => (
+                  <Select.Option key={option.id} value={index}>
+                    {option.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </label>
             <Button disabled={isPreparing || isExporting} onClick={this.resetImageSizes}>
               重置图片大小
             </Button>

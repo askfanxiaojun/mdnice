@@ -1,0 +1,23 @@
+.nice-font-theme-item {
+  display: grid;
+  grid-template-columns: 20px minmax(92px, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 205px;
+  padding: 6px 12px 6px 6px;
+}
+
+.nice-font-theme-flag {
+  display: inline-block;
+  width: 20px;
+}
+
+.nice-font-theme-name {
+  color: #31343a;
+}
+
+.nice-font-theme-sample {
+  color: #a0a4ad;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+}

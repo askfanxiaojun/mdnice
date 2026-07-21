@@ -14,6 +14,7 @@ export const CONTENT = "content";
 export const STYLE = "style";
 export const TEMPLATE_NUM = "template_num";
 export const CODE_NUM = "code_num";
+export const FONT_NUM = "font_num";
 export const PREVIEW_TYPE = "preview_type";
 export const IS_SYNC_SCROLL = "is_sync_scroll";
 export const IS_CONTAIN_IMG_NAME = "is_contain_img_name";
@@ -195,6 +196,34 @@ export const CODE_OPTIONS = [
     id: "xcode",
     macId: "macXcode",
     name: "xcode",
+  },
+];
+
+export const FONT_OPTIONS = [
+  {
+    id: "theme",
+    name: "跟随主题",
+    family: "",
+  },
+  {
+    id: "sans",
+    name: "现代黑体",
+    family: '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
+  },
+  {
+    id: "serif",
+    name: "人文宋体",
+    family: '"Songti SC", STSong, SimSun, "Noto Serif CJK SC", serif',
+  },
+  {
+    id: "kai",
+    name: "清雅楷体",
+    family: '"Kaiti SC", STKaiti, KaiTi, serif',
+  },
+  {
+    id: "optima",
+    name: "Optima 混排",
+    family: 'Optima-Regular, Optima, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Georgia, serif',
   },
 ];
 

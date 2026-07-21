@@ -21,6 +21,7 @@ class Reset extends Component {
         this.props.content.setStyle(TEMPLATE.style.normal);
         this.props.content.setCustomStyle(TEMPLATE.style.custom);
         this.props.navbar.setTemplateNum(0);
+        this.props.navbar.setFontNum(0);
         message.success("重置成功！");
       },
       onCancel() {},

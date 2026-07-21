@@ -108,6 +108,37 @@
   gap: 9px;
 }
 
+.nice-xhs-font-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: #8b9099;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.nice-xhs-font-control .ant-select {
+  width: 112px;
+  color: #34363c;
+  font-size: 12px;
+}
+
+.nice-xhs-font-control .ant-select-selection {
+  height: 36px;
+  background: #f7f7f8;
+  border-color: #e3e4e8;
+  border-radius: 9px;
+}
+
+.nice-xhs-font-control .ant-select-selection__rendered {
+  line-height: 34px;
+}
+
+.nice-xhs-font-dropdown {
+  z-index: 1300;
+}
+
 .nice-xhs-actions .ant-btn {
   height: 36px;
   border-radius: 9px;

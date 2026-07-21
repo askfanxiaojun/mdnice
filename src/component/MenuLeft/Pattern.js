@@ -10,7 +10,6 @@ import Form from "./Pattern/Form";
 import Image from "./Pattern/Image";
 import Format from "./Pattern/Format";
 import LinkToFoot from "./Pattern/LinkToFoot";
-import Font from "./Pattern/Font";
 import InlineCode from "./Pattern/InlineCode";
 
 import "./common.css";
@@ -44,10 +43,6 @@ const menu = (
     <Menu.Item>
       <Image />
     </Menu.Item>
-    <Menu.Item>
-      <Font />
-    </Menu.Item>
-
     <Menu.Divider />
 
     <Menu.Item>

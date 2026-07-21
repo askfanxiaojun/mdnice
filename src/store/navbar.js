@@ -5,6 +5,9 @@ import {
   CODE_NUM,
   CODE_THEME_ID,
   CODE_OPTIONS,
+  FONT_NUM,
+  FONT_THEME_ID,
+  FONT_OPTIONS,
   PREVIEW_TYPE,
   IS_SYNC_SCROLL,
   IS_CONTAIN_IMG_NAME,
@@ -25,6 +28,9 @@ class Navbar {
 
   // 代码主题序号
   @observable codeNum;
+
+  // 正文字体序号
+  @observable fontNum;
 
   // 是否为 Mac 风格代码
   @observable isMacCode = false;
@@ -68,6 +74,31 @@ class Navbar {
   };
 
   @action
+  setFontNum = (fontNum) => {
+    const index = FONT_OPTIONS[fontNum] ? fontNum : 0;
+    this.fontNum = index;
+    window.localStorage.setItem(FONT_NUM, index);
+    const {family} = FONT_OPTIONS[index];
+    const fontStyle = family
+      ? `#nice,
+#nice p,
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6,
+#nice li section,
+#nice blockquote p,
+#nice figcaption,
+#nice table {
+  font-family: ${family} !important;
+}`
+      : "";
+    replaceStyle(FONT_THEME_ID, fontStyle);
+  };
+
+  @action
   setMacCode = (isMacCode) => {
     this.isMacCode = isMacCode;
     window.localStorage.setItem(IS_MAC_CODE, isMacCode);
@@ -92,6 +123,10 @@ if (!window.localStorage.getItem(CODE_NUM)) {
   window.localStorage.setItem(CODE_NUM, 1);
 }
 
+if (window.localStorage.getItem(FONT_NUM) === null) {
+  window.localStorage.setItem(FONT_NUM, 0);
+}
+
 if (!window.localStorage.getItem(PREVIEW_TYPE)) {
   window.localStorage.setItem(PREVIEW_TYPE, "mobile");
 }
@@ -111,10 +146,13 @@ if (!window.localStorage.getItem(IS_MAC_CODE)) {
 // 获取之前选择的主题状态
 store.templateNum = parseInt(window.localStorage.getItem(TEMPLATE_NUM), 10);
 store.codeNum = parseInt(window.localStorage.getItem(CODE_NUM), 10);
+store.fontNum = parseInt(window.localStorage.getItem(FONT_NUM), 10);
 store.previewType = window.localStorage.getItem(PREVIEW_TYPE);
 store.isSyncScroll = window.localStorage.getItem(IS_SYNC_SCROLL) === "true";
 store.isContainImgName = window.localStorage.getItem(IS_CONTAIN_IMG_NAME) === "true";
 store.isMacCode = window.localStorage.getItem(IS_MAC_CODE) === "true";
+
+store.setFontNum(store.fontNum);
 
 // 初始化代码主题
 const {macId, id} = CODE_OPTIONS[store.codeNum];
