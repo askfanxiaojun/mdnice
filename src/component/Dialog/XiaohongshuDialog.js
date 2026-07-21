@@ -14,7 +14,9 @@ import {
 } from "../../utils/constant";
 import {
   exportPagesToZip,
+  DEFAULT_IMAGE_SCALE,
   getDocumentTitle,
+  getDocumentTitleSource,
   MAX_IMAGE_HEIGHT,
   PAGE_CONTENT_WIDTH,
   PAGED_EXPORT_CSS,
@@ -98,6 +100,11 @@ class XiaohongshuDialog extends Component {
       }
 
       const clone = layout.cloneNode(true);
+      const titleSource = getDocumentTitleSource(clone);
+      const title = getDocumentTitle(clone);
+      if (titleSource) {
+        titleSource.setAttribute("data-xhs-cover-source", "true");
+      }
       const sourceImages = Array.from(layout.querySelectorAll("img"));
       const clonedImages = Array.from(clone.querySelectorAll("img"));
       const imageMeta = {};
@@ -110,11 +117,9 @@ class XiaohongshuDialog extends Component {
         const naturalHeight = sourceImage ? sourceImage.naturalHeight : 0;
         const ratio = naturalWidth && naturalHeight ? naturalWidth / naturalHeight : 1;
         const heightLimitedWidth = MAX_IMAGE_HEIGHT * ratio;
+        const fittedWidth = Math.min(rect.width || PAGE_CONTENT_WIDTH, PAGE_CONTENT_WIDTH, heightLimitedWidth);
         imageMeta[id] = {
-          initialWidth: Math.max(
-            48,
-            Math.min(rect.width || PAGE_CONTENT_WIDTH, PAGE_CONTENT_WIDTH, heightLimitedWidth),
-          ),
+          initialWidth: Math.max(48, fittedWidth * DEFAULT_IMAGE_SCALE),
           maxWidth: Math.max(48, Math.min(PAGE_CONTENT_WIDTH, heightLimitedWidth)),
         };
         image.setAttribute("data-xhs-image-id", id);
@@ -125,10 +130,12 @@ class XiaohongshuDialog extends Component {
         html: clone.innerHTML,
         css: this.collectStyles(),
         imageMeta,
+        title,
+        accentColor: this.getThemeAccent(layout),
       };
       this.setState(
         {
-          title: getDocumentTitle(clone),
+          title,
           themeName: template ? template.name : "当前主题",
           imageSizes: {},
           error: "",
@@ -138,6 +145,25 @@ class XiaohongshuDialog extends Component {
     } catch (error) {
       this.setState({isPreparing: false, error: error.message || "小红书排版初始化失败"});
     }
+  };
+
+  getThemeAccent = (layout) => {
+    const candidates = [
+      layout.querySelector("h2 .content"),
+      layout.querySelector("strong"),
+      layout.querySelector("a"),
+      layout.querySelector("h2"),
+    ].filter(Boolean);
+    for (let index = 0; index < candidates.length; index += 1) {
+      const style = window.getComputedStyle(candidates[index]);
+      if (style.backgroundColor && style.backgroundColor !== "rgba(0, 0, 0, 0)") {
+        return style.backgroundColor;
+      }
+      if (style.color && style.color !== "rgb(0, 0, 0)") {
+        return style.color;
+      }
+    }
+    return "#b98a44";
   };
 
   getImageWidth = (id) => {
@@ -153,6 +179,35 @@ class XiaohongshuDialog extends Component {
     source.id = LAYOUT_ID;
     source.className = "nice-xhs-paged-source";
     source.innerHTML = this.snapshot.html;
+    const articleBody = document.createElement("div");
+    articleBody.className = "nice-xhs-article-body";
+    Array.from(source.childNodes).forEach((node) => articleBody.appendChild(node));
+
+    const cover = document.createElement("header");
+    cover.className = "nice-xhs-cover";
+    cover.style.setProperty("--xhs-cover-accent", this.snapshot.accentColor);
+    const meta = document.createElement("div");
+    meta.className = "nice-xhs-cover-meta";
+    meta.textContent = "专题文章 · 01";
+    const titleFrame = document.createElement("div");
+    titleFrame.className = "nice-xhs-cover-title-frame";
+    const title = document.createElement("h1");
+    title.className = "nice-xhs-cover-title";
+    if (this.snapshot.title.length > 46) {
+      title.classList.add("is-very-long");
+    } else if (this.snapshot.title.length > 28) {
+      title.classList.add("is-long");
+    }
+    title.textContent = this.snapshot.title;
+    titleFrame.appendChild(title);
+    const tail = document.createElement("div");
+    tail.className = "nice-xhs-cover-tail";
+    tail.textContent = "文章导读";
+    cover.appendChild(meta);
+    cover.appendChild(titleFrame);
+    cover.appendChild(tail);
+    source.appendChild(cover);
+    source.appendChild(articleBody);
     source.querySelectorAll("img[data-xhs-image-id]").forEach((image) => {
       const id = image.getAttribute("data-xhs-image-id");
       image.style.setProperty("--xhs-image-width", `${this.getImageWidth(id)}px`);
@@ -368,7 +423,7 @@ class XiaohongshuDialog extends Component {
             <span className="nice-xhs-brand-mark">RED</span>
             <div>
               <h2>小红书排版</h2>
-              <p>固定 1080 × 1800 · 本地生成 · 图片不裁剪</p>
+              <p>固定 1080 × 1800 · 紧凑分页 · 首页封面</p>
             </div>
           </div>
           <div className="nice-xhs-document-meta">
