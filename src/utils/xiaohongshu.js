@@ -3,11 +3,11 @@ import {toBlob} from "html-to-image";
 
 export const PAGE_WIDTH = 360;
 export const PAGE_HEIGHT = 600;
-export const PAGE_MARGIN = 14;
+export const PAGE_MARGIN = 24;
 export const PAGE_CONTENT_WIDTH = PAGE_WIDTH - PAGE_MARGIN * 2;
 export const PAGE_CONTENT_HEIGHT = PAGE_HEIGHT - PAGE_MARGIN * 2;
 export const MAX_IMAGE_HEIGHT = 500;
-export const DEFAULT_IMAGE_SCALE = 0.9;
+export const DEFAULT_IMAGE_SCALE = 1;
 export const OUTPUT_WIDTH = 1080;
 export const OUTPUT_HEIGHT = 1800;
 
@@ -34,19 +34,26 @@ export const PAGED_EXPORT_CSS = `
   background: transparent !important;
 }
 
-.pagedjs_page {
+.pagedjs_pages .pagedjs_page {
   margin: 0 !important;
-  background: #fff !important;
+  background: #fbfaf7 !important;
 }
 
-.pagedjs_sheet,
-.pagedjs_pagebox {
-  background: #fff !important;
+.pagedjs_pages .pagedjs_page .pagedjs_sheet,
+.pagedjs_pages .pagedjs_page .pagedjs_pagebox {
+  background: #fbfaf7 !important;
   box-shadow: none !important;
+}
+
+.pagedjs_pages .pagedjs_page .pagedjs_area,
+.pagedjs_pages .pagedjs_page .pagedjs_page_content,
+#nice {
+  background-color: transparent !important;
 }
 
 #nice {
   box-sizing: border-box;
+  padding: 0 !important;
   margin-top: 0 !important;
   width: 100%;
 }
@@ -69,27 +76,6 @@ export const PAGED_EXPORT_CSS = `
   left: -${PAGE_MARGIN}px;
   height: 13px;
   background: color-mix(in srgb, var(--xhs-cover-accent) 14%, #fff 86%);
-  content: "";
-}
-
-#nice .nice-xhs-cover-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 5px 9px;
-  color: color-mix(in srgb, var(--xhs-cover-accent) 72%, #55412f 28%);
-  font-family: var(--xhs-cover-font) !important;
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 1.8px;
-  line-height: 1;
-}
-
-#nice .nice-xhs-cover-meta:after {
-  width: 34px;
-  height: 1px;
-  margin-left: 10px;
-  background: currentColor;
   content: "";
 }
 
@@ -154,40 +140,24 @@ export const PAGED_EXPORT_CSS = `
   line-height: 1.24 !important;
 }
 
-#nice .nice-xhs-cover-tail {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 13px 5px 0;
-  color: color-mix(in srgb, var(--xhs-cover-accent) 72%, #55412f 28%);
-  font-family: var(--xhs-cover-font) !important;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-#nice .nice-xhs-cover-tail:before {
-  width: 3px;
-  height: 17px;
-  background: currentColor;
-  content: "";
-}
-
 #nice [data-xhs-cover-source="true"] {
   display: none !important;
 }
 
 #nice .nice-xhs-article-body {
-  font-size: 14.5px !important;
-  line-height: 1.48 !important;
+  color: #252525 !important;
+  font-size: 15px !important;
+  line-height: 1.68 !important;
+  letter-spacing: 0.12px !important;
 }
 
 #nice .nice-xhs-article-body p {
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-  font-size: 14.5px !important;
-  line-height: 21px !important;
+  padding: 0 !important;
+  margin: 0 0 12px !important;
+  color: #252525 !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 25px !important;
 }
 
 #nice .nice-xhs-article-body h1,
@@ -196,53 +166,162 @@ export const PAGED_EXPORT_CSS = `
 #nice .nice-xhs-article-body h4,
 #nice .nice-xhs-article-body h5,
 #nice .nice-xhs-article-body h6 {
-  margin-top: 16px !important;
-  margin-bottom: 7px !important;
+  color: #202124 !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-align: left !important;
 }
 
 #nice .nice-xhs-article-body h1 {
-  font-size: 22px !important;
+  padding: 0 !important;
+  margin: 25px 0 14px !important;
+  font-size: 24px !important;
+  line-height: 1.35 !important;
 }
 
 #nice .nice-xhs-article-body h2 {
-  font-size: 20px !important;
+  position: relative;
+  padding: 1px 0 1px 13px !important;
+  margin: 23px 0 15px !important;
+  font-size: 21px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
 }
 
 #nice .nice-xhs-article-body h3 {
+  padding: 0 !important;
+  margin: 20px 0 10px !important;
   font-size: 18px !important;
+  font-weight: 750 !important;
+  line-height: 1.45 !important;
 }
 
 #nice .nice-xhs-article-body h4,
 #nice .nice-xhs-article-body h5,
 #nice .nice-xhs-article-body h6 {
+  padding: 0 !important;
+  margin: 17px 0 9px !important;
   font-size: 16px !important;
+  line-height: 1.45 !important;
 }
 
-#nice .nice-xhs-article-body ul,
-#nice .nice-xhs-article-body ol {
-  margin-top: 4px !important;
-  margin-bottom: 4px !important;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
+#nice .nice-xhs-article-body h2:before {
+  position: absolute !important;
+  top: 1px !important;
+  bottom: 1px !important;
+  left: 0 !important;
+  display: block !important;
+  width: 4px !important;
+  height: auto !important;
+  background: var(--xhs-editorial-accent) !important;
+  border: 0 !important;
+  content: "" !important;
+}
+
+#nice .nice-xhs-article-body h1:after,
+#nice .nice-xhs-article-body h2:after,
+#nice .nice-xhs-article-body h3:after,
+#nice .nice-xhs-article-body h4:after,
+#nice .nice-xhs-article-body h5:after,
+#nice .nice-xhs-article-body h6:after {
+  display: none !important;
+  content: none !important;
+}
+
+#nice .nice-xhs-article-body h1 .content,
+#nice .nice-xhs-article-body h2 .content,
+#nice .nice-xhs-article-body h3 .content,
+#nice .nice-xhs-article-body h4 .content,
+#nice .nice-xhs-article-body h5 .content,
+#nice .nice-xhs-article-body h6 .content {
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+#nice .nice-xhs-article-body li {
+  padding-left: 3px !important;
+  margin: 0 0 9px !important;
+  color: #252525 !important;
 }
 
 #nice .nice-xhs-article-body li section,
-#nice .nice-xhs-article-body blockquote p,
 #nice .nice-xhs-article-body pre code span {
-  line-height: 21px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #252525 !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 25px !important;
 }
 
 #nice .nice-xhs-article-body blockquote {
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
+  box-sizing: border-box;
+  padding: 11px 13px 11px 15px !important;
+  margin: 14px 0 18px !important;
+  color: color-mix(in srgb, var(--xhs-editorial-accent) 76%, #3d352d 24%) !important;
+  background: color-mix(in srgb, var(--xhs-editorial-accent) 7%, #fbfaf7 93%) !important;
+  border: 0 !important;
+  border-left: 3px solid var(--xhs-editorial-accent) !important;
 }
 
-#nice .nice-xhs-article-body pre,
+#nice .nice-xhs-article-body blockquote p {
+  margin: 0 !important;
+  color: inherit !important;
+  font-size: 14.5px !important;
+  line-height: 24px !important;
+}
+
+#nice .nice-xhs-article-body strong {
+  color: var(--xhs-editorial-accent) !important;
+  font-weight: 750 !important;
+  border-bottom: 1px solid currentColor !important;
+}
+
+#nice .nice-xhs-article-body a {
+  color: var(--xhs-editorial-accent) !important;
+  border-bottom-color: currentColor !important;
+}
+
+#nice .nice-xhs-article-body pre {
+  margin: 13px 0 17px !important;
+}
+
+#nice .nice-xhs-article-body pre code,
+#nice .nice-xhs-article-body pre code span {
+  font-size: 11.5px !important;
+  line-height: 19px !important;
+}
+
 #nice .nice-xhs-article-body figure {
-  margin-top: 7px !important;
-  margin-bottom: 7px !important;
+  margin: 14px 0 17px !important;
+}
+
+#nice .nice-xhs-article-body figcaption {
+  margin-top: 6px !important;
+  color: #8a8883 !important;
+  font-size: 12.5px !important;
+  line-height: 18px !important;
+}
+
+#nice .nice-xhs-article-body table {
+  margin: 13px 0 17px !important;
+  font-size: 13.5px !important;
+  line-height: 21px !important;
+}
+
+#nice .nice-xhs-article-body table th,
+#nice .nice-xhs-article-body table td {
+  padding: 5px 7px !important;
+}
+
+#nice .nice-xhs-article-body hr {
+  margin: 17px 0 !important;
+  border-top-color: color-mix(in srgb, var(--xhs-editorial-accent) 30%, #d8d4cc 70%) !important;
 }
 
 #nice h1,
@@ -275,7 +354,7 @@ export const PAGED_EXPORT_CSS = `
 }
 
 #nice .imageflow-layer3 {
-  margin: 10px 0;
+  margin: 14px 0 17px;
 }
 
 #nice img[data-xhs-image-id] {

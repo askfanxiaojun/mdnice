@@ -23,6 +23,7 @@ import {
   PAGED_EXPORT_CSS,
   waitForImages,
 } from "../../utils/xiaohongshu";
+import TEMPLATE from "../../template/index";
 import "./XiaohongshuDialog.css";
 
 const INITIAL_STATE = {
@@ -38,6 +39,7 @@ const INITIAL_STATE = {
 
 @inject("dialog")
 @inject("navbar")
+@inject("content")
 @observer
 class XiaohongshuDialog extends Component {
   isActive = false;
@@ -113,12 +115,11 @@ class XiaohongshuDialog extends Component {
       clonedImages.forEach((image, index) => {
         const sourceImage = sourceImages[index];
         const id = `xhs-image-${index}`;
-        const rect = sourceImage ? sourceImage.getBoundingClientRect() : {width: PAGE_CONTENT_WIDTH};
         const naturalWidth = sourceImage ? sourceImage.naturalWidth : 0;
         const naturalHeight = sourceImage ? sourceImage.naturalHeight : 0;
         const ratio = naturalWidth && naturalHeight ? naturalWidth / naturalHeight : 1;
         const heightLimitedWidth = MAX_IMAGE_HEIGHT * ratio;
-        const fittedWidth = Math.min(rect.width || PAGE_CONTENT_WIDTH, PAGE_CONTENT_WIDTH, heightLimitedWidth);
+        const fittedWidth = Math.min(PAGE_CONTENT_WIDTH, heightLimitedWidth);
         imageMeta[id] = {
           initialWidth: Math.max(48, fittedWidth * DEFAULT_IMAGE_SCALE),
           maxWidth: Math.max(48, Math.min(PAGE_CONTENT_WIDTH, heightLimitedWidth)),
@@ -151,20 +152,30 @@ class XiaohongshuDialog extends Component {
   };
 
   getThemeAccent = (layout) => {
+    const probe = document.createElement("div");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText =
+      "position:absolute;visibility:hidden;width:1px;height:1px;overflow:hidden;pointer-events:none";
+    probe.innerHTML = '<h2><span class="content">主题</span></h2><p><a href="#">链接</a><strong>重点</strong></p>';
+    layout.appendChild(probe);
     const candidates = [
-      layout.querySelector("h2 .content"),
-      layout.querySelector("strong"),
-      layout.querySelector("a"),
-      layout.querySelector("h2"),
-    ].filter(Boolean);
-    for (let index = 0; index < candidates.length; index += 1) {
-      const style = window.getComputedStyle(candidates[index]);
-      if (style.backgroundColor && style.backgroundColor !== "rgba(0, 0, 0, 0)") {
-        return style.backgroundColor;
+      probe.querySelector("a"),
+      probe.querySelector("strong"),
+      probe.querySelector("h2 .content"),
+      probe.querySelector("h2"),
+    ];
+    try {
+      for (let index = 0; index < candidates.length; index += 1) {
+        const style = window.getComputedStyle(candidates[index]);
+        if (style.backgroundColor && style.backgroundColor !== "rgba(0, 0, 0, 0)") {
+          return style.backgroundColor;
+        }
+        if (style.color && style.color !== "rgb(0, 0, 0)") {
+          return style.color;
+        }
       }
-      if (style.color && style.color !== "rgb(0, 0, 0)") {
-        return style.color;
-      }
+    } finally {
+      probe.remove();
     }
     return "#b98a44";
   };
@@ -181,6 +192,7 @@ class XiaohongshuDialog extends Component {
     const source = document.createElement("section");
     source.id = LAYOUT_ID;
     source.className = "nice-xhs-paged-source";
+    source.style.setProperty("--xhs-editorial-accent", this.snapshot.accentColor);
     source.innerHTML = this.snapshot.html;
     const articleBody = document.createElement("div");
     articleBody.className = "nice-xhs-article-body";
@@ -190,9 +202,6 @@ class XiaohongshuDialog extends Component {
     cover.className = "nice-xhs-cover";
     cover.style.setProperty("--xhs-cover-accent", this.snapshot.accentColor);
     cover.style.setProperty("--xhs-cover-font", this.snapshot.fontFamily);
-    const meta = document.createElement("div");
-    meta.className = "nice-xhs-cover-meta";
-    meta.textContent = "专题文章 · 01";
     const titleFrame = document.createElement("div");
     titleFrame.className = "nice-xhs-cover-title-frame";
     const title = document.createElement("h1");
@@ -204,12 +213,7 @@ class XiaohongshuDialog extends Component {
     }
     title.textContent = this.snapshot.title;
     titleFrame.appendChild(title);
-    const tail = document.createElement("div");
-    tail.className = "nice-xhs-cover-tail";
-    tail.textContent = "文章导读";
-    cover.appendChild(meta);
     cover.appendChild(titleFrame);
-    cover.appendChild(tail);
     source.appendChild(cover);
     source.appendChild(articleBody);
     source.querySelectorAll("img[data-xhs-image-id]").forEach((image) => {
@@ -361,6 +365,26 @@ class XiaohongshuDialog extends Component {
     this.setState({imageSizes: {}}, this.paginate);
   };
 
+  changeTheme = (templateNum) => {
+    if (this.state.isPreparing || this.state.isExporting || !this.snapshot) {
+      return;
+    }
+    const template = TEMPLATE_OPTIONS[templateNum];
+    if (!template) {
+      return;
+    }
+    this.props.navbar.setTemplateNum(templateNum);
+    if (template.id === "custom") {
+      this.props.content.setCustomStyle();
+    } else {
+      this.props.content.setStyle(TEMPLATE.style[template.id]);
+    }
+    const layout = document.getElementById(LAYOUT_ID);
+    this.snapshot.css = this.collectStyles();
+    this.snapshot.accentColor = this.getThemeAccent(layout);
+    this.setState({themeName: template.name}, this.paginate);
+  };
+
   changeFont = (fontNum) => {
     if (this.state.isPreparing || this.state.isExporting || !this.snapshot) {
       return;
@@ -453,6 +477,23 @@ class XiaohongshuDialog extends Component {
             <strong>{pageCount || "—"}</strong>
           </div>
           <div className="nice-xhs-actions">
+            <label className="nice-xhs-theme-control" htmlFor="nice-xhs-theme-select">
+              <span>主题</span>
+              <Select
+                id="nice-xhs-theme-select"
+                value={this.props.navbar.templateNum}
+                disabled={isPreparing || isExporting}
+                dropdownClassName="nice-xhs-theme-dropdown"
+                dropdownMatchSelectWidth={false}
+                onChange={this.changeTheme}
+              >
+                {TEMPLATE_OPTIONS.map((option, index) => (
+                  <Select.Option key={option.id} value={index}>
+                    {option.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </label>
             <label className="nice-xhs-font-control" htmlFor="nice-xhs-font-select">
               <span>字体</span>
               <Select

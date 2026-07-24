@@ -108,6 +108,7 @@
   gap: 9px;
 }
 
+.nice-xhs-theme-control,
 .nice-xhs-font-control {
   display: inline-flex;
   align-items: center;
@@ -118,12 +119,14 @@
   font-weight: 500;
 }
 
+.nice-xhs-theme-control .ant-select,
 .nice-xhs-font-control .ant-select {
   width: 112px;
   color: #34363c;
   font-size: 12px;
 }
 
+.nice-xhs-theme-control .ant-select-selection,
 .nice-xhs-font-control .ant-select-selection {
   height: 36px;
   background: #f7f7f8;
@@ -131,10 +134,12 @@
   border-radius: 9px;
 }
 
+.nice-xhs-theme-control .ant-select-selection__rendered,
 .nice-xhs-font-control .ant-select-selection__rendered {
   line-height: 34px;
 }
 
+.nice-xhs-theme-dropdown,
 .nice-xhs-font-dropdown {
   z-index: 1300;
 }
@@ -363,15 +368,23 @@
   }
 
   .nice-xhs-brand p,
-  .nice-xhs-stage-heading small,
-  .nice-xhs-actions > .ant-btn:first-child {
+  .nice-xhs-stage-heading small {
     display: none;
   }
 
   .nice-xhs-actions {
-    position: absolute;
-    top: 19px;
-    right: 14px;
+    position: static;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .nice-xhs-theme-control .ant-select,
+  .nice-xhs-font-control .ant-select {
+    width: 100px;
+  }
+
+  .nice-xhs-close {
+    margin-left: auto;
   }
 
   .nice-xhs-stage {
