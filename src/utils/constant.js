@@ -157,6 +157,12 @@ export const TEMPLATE_OPTIONS = [
     author: "隔壁樊同学",
     isNew: true,
   },
+  {
+    id: "customOrange",
+    name: "橙色",
+    author: "隔壁樊同学",
+    isNew: true,
+  },
 ];
 
 export const TEMPLATE_CUSTOM_NUM = TEMPLATE_OPTIONS.findIndex((option) => option.id === "custom");
