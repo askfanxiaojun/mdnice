@@ -1,0 +1,133 @@
+.nice-density-menu-link span {
+  display: inline-block;
+  min-width: 28px;
+  margin-left: 3px;
+  color: #b66a2c;
+  font-family: Avenir Next, Futura, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.nice-density-overlay {
+  padding-top: 7px;
+}
+
+.nice-density-panel {
+  width: 298px;
+  padding: 17px 18px 15px;
+  background: #fffefa;
+  border: 1px solid rgba(61, 43, 27, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(42, 31, 22, 0.16), 0 2px 8px rgba(42, 31, 22, 0.08);
+}
+
+.nice-density-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.nice-density-panel-header strong,
+.nice-density-panel-header span {
+  display: block;
+}
+
+.nice-density-panel-header strong {
+  color: #2d251f;
+  font-family: "Songti SC", STSong, serif;
+  font-size: 16px;
+}
+
+.nice-density-panel-header span {
+  margin-top: 2px;
+  color: #9a918a;
+  font-size: 10px;
+}
+
+.nice-density-panel-header output {
+  color: #8a4f22;
+  font-family: Avenir Next, Futura, sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.nice-density-panel .ant-slider {
+  margin: 17px 6px 4px;
+}
+
+.nice-density-panel .ant-slider-rail {
+  height: 5px;
+  background: #eee7df;
+}
+
+.nice-density-panel .ant-slider-track {
+  height: 5px;
+  background: linear-gradient(90deg, #c77a37, #e5a86e);
+}
+
+.nice-density-panel .ant-slider-handle {
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  background: #fffefa;
+  border: 3px solid #b9692d;
+  box-shadow: 0 2px 7px rgba(121, 69, 29, 0.24);
+}
+
+.nice-density-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #a19a94;
+  font-size: 9px;
+}
+
+.nice-density-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 13px;
+}
+
+.nice-density-presets button {
+  padding: 7px 3px 6px;
+  color: #716860;
+  background: #f5f1ec;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+}
+
+.nice-density-presets button:hover,
+.nice-density-presets button.is-active {
+  color: #81491f;
+  background: #faedda;
+  border-color: rgba(173, 101, 46, 0.22);
+}
+
+.nice-density-presets span,
+.nice-density-presets small {
+  display: block;
+}
+
+.nice-density-presets span {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.nice-density-presets small {
+  margin-top: 1px;
+  font-family: Avenir Next, Futura, sans-serif;
+  font-size: 9px;
+}
+
+.nice-density-hint {
+  margin: 11px 0 0;
+  color: #8e857e;
+  font-size: 10px;
+  line-height: 1.45;
+  text-align: center;
+}

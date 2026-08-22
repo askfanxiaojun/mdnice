@@ -1,5 +1,6 @@
 import JSZip from "jszip";
 import {toBlob} from "html-to-image";
+import {createDensityStyle} from "./density";
 
 export const PAGE_WIDTH = 360;
 export const PAGE_HEIGHT = 600;
@@ -368,6 +369,11 @@ export const PAGED_EXPORT_CSS = `
   page-break-inside: avoid;
 }
 `;
+
+export const getPagedExportCss = (densityScale) =>
+  `${PAGED_EXPORT_CSS}\n${createDensityStyle(PAGED_EXPORT_CSS, densityScale, (selector) =>
+    selector.includes("#nice .nice-xhs-article-body"),
+  )}`;
 
 export const sanitizeFilename = (value) => {
   const sanitized = Array.from(value || "")

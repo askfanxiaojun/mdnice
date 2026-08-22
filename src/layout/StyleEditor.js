@@ -46,6 +46,7 @@ class StyleEditor extends Component {
         const style = `/*自定义样式，实时生效*/\n\n` + TEMPLATE.style[id];
         this.props.content.setCustomStyle(style);
         this.props.navbar.setTemplateNum(TEMPLATE_CUSTOM_NUM);
+        this.props.navbar.refreshDensityStyle();
       },
       onCancel: () => {},
     });
@@ -59,6 +60,7 @@ class StyleEditor extends Component {
     } else if (this.focus) {
       const style = editor.getValue();
       this.props.content.setCustomStyle(style);
+      this.props.navbar.refreshDensityStyle();
     }
   };
 

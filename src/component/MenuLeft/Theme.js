@@ -24,6 +24,7 @@ class Theme extends React.Component {
     } else {
       this.props.content.setStyle(TEMPLATE.style[id]);
     }
+    this.props.navbar.refreshDensityStyle();
   };
 
   toggleStyleEditor = () => {
