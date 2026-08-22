@@ -8,6 +8,7 @@ import Pattern from "../component/MenuLeft/Pattern";
 import Function from "../component/MenuLeft/Function";
 import Theme from "../component/MenuLeft/Theme";
 import FontTheme from "../component/MenuLeft/FontTheme";
+import Density from "../component/MenuLeft/Density";
 import CodeTheme from "../component/MenuLeft/CodeTheme";
 import Setting from "../component/MenuLeft/Setting";
 import View from "../component/MenuLeft/View";
@@ -39,6 +40,7 @@ class Navbar extends Component {
           <View />
           <Theme />
           <FontTheme />
+          <Density />
           <CodeTheme />
           <Setting />
           <Help />

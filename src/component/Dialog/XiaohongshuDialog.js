@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import {observer, inject} from "mobx-react";
-import {Button, message, Select} from "antd";
+import {Button, message, Select, Slider} from "antd";
 import {Previewer} from "pagedjs";
 
 import {
@@ -11,6 +11,8 @@ import {
   FONT_OPTIONS,
   LAYOUT_ID,
   MARKDOWN_THEME_ID,
+  MAX_DENSITY_SCALE,
+  MIN_DENSITY_SCALE,
   TEMPLATE_OPTIONS,
 } from "../../utils/constant";
 import {
@@ -20,9 +22,10 @@ import {
   getDocumentTitleSource,
   MAX_IMAGE_HEIGHT,
   PAGE_CONTENT_WIDTH,
-  PAGED_EXPORT_CSS,
+  getPagedExportCss,
   waitForImages,
 } from "../../utils/xiaohongshu";
+import {getDensityLabel, getEstimatedCapacityGain} from "../../utils/density";
 import TEMPLATE from "../../template/index";
 import "./XiaohongshuDialog.css";
 
@@ -258,7 +261,7 @@ class XiaohongshuDialog extends Component {
       const styleUrl = `${window.location.href.split("#")[0]}#xiaohongshu-export`;
       await this.previewer.preview(
         source,
-        [{[styleUrl]: `${this.snapshot.css}\n${PAGED_EXPORT_CSS}`}],
+        [{[styleUrl]: `${this.snapshot.css}\n${getPagedExportCss(this.props.navbar.densityScale)}`}],
         this.renderTarget,
       );
       if (token !== this.paginationToken || !this.isActive) {
@@ -379,6 +382,7 @@ class XiaohongshuDialog extends Component {
     } else {
       this.props.content.setStyle(TEMPLATE.style[template.id]);
     }
+    this.props.navbar.refreshDensityStyle();
     const layout = document.getElementById(LAYOUT_ID);
     this.snapshot.css = this.collectStyles();
     this.snapshot.accentColor = this.getThemeAccent(layout);
@@ -393,6 +397,18 @@ class XiaohongshuDialog extends Component {
     const layout = document.getElementById(LAYOUT_ID);
     const fontOption = FONT_OPTIONS[fontNum] || FONT_OPTIONS[0];
     this.snapshot.fontFamily = fontOption.family || window.getComputedStyle(layout).fontFamily;
+    this.snapshot.css = this.collectStyles();
+    this.paginate();
+  };
+
+  changeDensity = (densityScale) => {
+    this.props.navbar.setDensityScale(densityScale);
+  };
+
+  commitDensity = () => {
+    if (this.state.isPreparing || this.state.isExporting || !this.snapshot) {
+      return;
+    }
     this.snapshot.css = this.collectStyles();
     this.paginate();
   };
@@ -454,6 +470,7 @@ class XiaohongshuDialog extends Component {
     }
 
     const {title, themeName, pageCount, isPreparing, isExporting, exportProgress, error} = this.state;
+    const {densityScale} = this.props.navbar;
     const downloadText = isExporting ? `正在生成 ${exportProgress}%` : "下载全部 ZIP";
 
     return ReactDOM.createPortal(
@@ -510,6 +527,23 @@ class XiaohongshuDialog extends Component {
                   </Select.Option>
                 ))}
               </Select>
+            </label>
+            <label className="nice-xhs-density-control" htmlFor="nice-xhs-density-slider">
+              <span>密度</span>
+              <Slider
+                id="nice-xhs-density-slider"
+                min={MIN_DENSITY_SCALE}
+                max={MAX_DENSITY_SCALE}
+                step={1}
+                value={densityScale}
+                disabled={isPreparing || isExporting}
+                tipFormatter={(value) => `${value}% · ${getDensityLabel(value)}`}
+                onChange={this.changeDensity}
+                onAfterChange={this.commitDensity}
+              />
+              <output title={`预计内容容量提升约 ${getEstimatedCapacityGain(densityScale)}%`}>
+                {`${densityScale}%`}
+              </output>
             </label>
             <Button disabled={isPreparing || isExporting} onClick={this.resetImageSizes}>
               重置图片大小

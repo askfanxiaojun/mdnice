@@ -8,6 +8,11 @@ import {
   FONT_NUM,
   FONT_THEME_ID,
   FONT_OPTIONS,
+  DENSITY_SCALE,
+  DENSITY_THEME_ID,
+  DEFAULT_DENSITY_SCALE,
+  MIN_DENSITY_SCALE,
+  MAX_DENSITY_SCALE,
   PREVIEW_TYPE,
   IS_SYNC_SCROLL,
   IS_CONTAIN_IMG_NAME,
@@ -15,6 +20,7 @@ import {
 } from "../utils/constant";
 import TEMPLATE from "../template/index";
 import {replaceStyle} from "../utils/helper";
+import {createComputedDensityStyle} from "../utils/density";
 
 class Navbar {
   // 是否同步滚动
@@ -31,6 +37,9 @@ class Navbar {
 
   // 正文字体序号
   @observable fontNum;
+
+  // 文章排版密度百分比
+  @observable densityScale;
 
   // 是否为 Mac 风格代码
   @observable isMacCode = false;
@@ -71,6 +80,7 @@ class Navbar {
         replaceStyle(CODE_THEME_ID, TEMPLATE.code[id]);
       }
     }
+    this.refreshDensityStyle();
   };
 
   @action
@@ -96,6 +106,25 @@ class Navbar {
 }`
       : "";
     replaceStyle(FONT_THEME_ID, fontStyle);
+    this.refreshDensityStyle();
+  };
+
+  refreshDensityStyle = () => {
+    const densityStyle = document.getElementById(DENSITY_THEME_ID);
+    if (!densityStyle) {
+      return;
+    }
+    replaceStyle(DENSITY_THEME_ID, "");
+    replaceStyle(DENSITY_THEME_ID, createComputedDensityStyle(this.densityScale));
+  };
+
+  @action
+  setDensityScale = (densityScale) => {
+    const parsed = parseInt(densityScale, 10);
+    const value = Math.min(MAX_DENSITY_SCALE, Math.max(MIN_DENSITY_SCALE, parsed || DEFAULT_DENSITY_SCALE));
+    this.densityScale = value;
+    window.localStorage.setItem(DENSITY_SCALE, value);
+    this.refreshDensityStyle();
   };
 
   @action
@@ -127,6 +156,10 @@ if (window.localStorage.getItem(FONT_NUM) === null) {
   window.localStorage.setItem(FONT_NUM, 0);
 }
 
+if (window.localStorage.getItem(DENSITY_SCALE) === null) {
+  window.localStorage.setItem(DENSITY_SCALE, DEFAULT_DENSITY_SCALE);
+}
+
 if (!window.localStorage.getItem(PREVIEW_TYPE)) {
   window.localStorage.setItem(PREVIEW_TYPE, "mobile");
 }
@@ -147,6 +180,7 @@ if (!window.localStorage.getItem(IS_MAC_CODE)) {
 store.templateNum = parseInt(window.localStorage.getItem(TEMPLATE_NUM), 10);
 store.codeNum = parseInt(window.localStorage.getItem(CODE_NUM), 10);
 store.fontNum = parseInt(window.localStorage.getItem(FONT_NUM), 10);
+store.densityScale = parseInt(window.localStorage.getItem(DENSITY_SCALE), 10);
 store.previewType = window.localStorage.getItem(PREVIEW_TYPE);
 store.isSyncScroll = window.localStorage.getItem(IS_SYNC_SCROLL) === "true";
 store.isContainImgName = window.localStorage.getItem(IS_CONTAIN_IMG_NAME) === "true";
@@ -163,5 +197,7 @@ if (store.codeNum !== 0) {
     replaceStyle(CODE_THEME_ID, TEMPLATE.code[id]);
   }
 }
+
+store.setDensityScale(store.densityScale);
 
 export default store;

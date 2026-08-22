@@ -7,6 +7,7 @@ import {
   LAYOUT_ID,
   BOX_ID,
   FONT_THEME_ID,
+  DENSITY_THEME_ID,
   MJX_DATA_FORMULA,
 } from "./constant";
 
@@ -101,9 +102,10 @@ export const solveHtml = () => {
   const markdownStyle = document.getElementById(MARKDOWN_THEME_ID).innerText;
   const codeStyle = document.getElementById(CODE_THEME_ID).innerText;
   const fontStyle = document.getElementById(FONT_THEME_ID).innerText;
+  const densityStyle = document.getElementById(DENSITY_THEME_ID).innerText;
   let res = "";
   try {
-    res = juice.inlineContent(html, basicStyle + markdownStyle + codeStyle + fontStyle, {
+    res = juice.inlineContent(html, basicStyle + markdownStyle + codeStyle + fontStyle + densityStyle, {
       inlinePseudoElements: true,
       preserveImportant: true,
     });
