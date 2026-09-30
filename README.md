@@ -1,306 +1,82 @@
-<h1 align="center">Markdown Nice 旧版</h1>
+# Markdown Nice
 
-## 简介
+**支持自定义排版风格的 Markdown 编辑器，也能把文章生成小红书风格的图文长图。**
 
-本项目基于 [markdown-nice](https://github.com/mdnice/markdown-nice) 进行二次开发，再次对原项目所有贡献者表示感谢🙏
+在编辑区写作，在预览区查看排版效果。你可以选择主题、调整字体与排版密度，也可以通过自定义 CSS 修改标题、正文、引用、图片等元素的样式，让内容更符合自己的表达风格。同一篇 Markdown 文章，既可以用于微信公众号、知乎和稀土掘金排版，也可以生成适合小红书发布的图片。
 
-- 保留原项目所有功能
-- 去除登录及主题商店功能
-- 去除版本更新提示
-- 修复部分主题图片无法正常加载
-- 调整主题菜单项顺序
-- 调整默认代码主题为 ***atom-one-dark***，并默认开启 ***Mac 风格*** 配置
-- 新增主题 「极简黑」，「凝夜紫」
+## 核心功能
 
-> 有疑问请参考 [如何有效的解决 mdnice 相关问题？](https://github.com/mdnice/markdown-nice/issues/163)
+- **Markdown 写作与实时预览**：支持标题、列表、引用、表格、图片、代码块等常用语法；单次回车即可换行，空行用于分段。
+- **自定义排版风格**：支持主题切换、字体选择和排版密度调整；通过自定义 CSS 精细修改颜色、字号、间距、边框等样式，并实时查看效果。
+- **多平台内容排版**：支持将排版后的内容复制到微信公众号、知乎和稀土掘金，减少重复调整格式的工作。
+- **小红书图文长图生成**：将文章转换为小红书风格的竖版图文，自动生成首页封面并分页；可调整主题、字体、密度，以及拖动缩放图片。
+- **图片批量导出**：小红书模式每页输出 **1080 × 1800 PNG**，按顺序命名并打包为 ZIP 下载，解压后即可用于发布。
 
-## 部署
+适合公众号作者、小红书创作者，以及希望把教程、观点、知识笔记排版后分享的人。
 
-可以选择下载整个项目，自行编译，也可以只下载  mdnice.zip 然后直接上传到网站根目录下直接使用。
+## 界面与效果
 
-## 主题
+### 编辑器总览
 
+左侧编辑 Markdown，右侧实时预览排版结果。
 
-阿喵我自定义的主题css如下
+> 📷 截图待补充：编辑器完整界面，建议同时展示正文、主题菜单和预览效果。
 
-### 预览图
-![image](https://github.com/user-attachments/assets/c04eaf46-0ee0-42e1-ac94-ddaa2e439a4c)
+<!-- 截图上传至 assets/screenshots/editor-overview.png 后，取消下一行的注释即可显示。 -->
+<!-- ![Markdown 编辑器与实时预览](assets/screenshots/editor-overview.png) -->
 
+### 自定义排版
 
-### CSS代码
-```css
+展示同一篇文章如何通过主题或自定义样式呈现不同风格。
 
-/* 全局属性
- * 页边距 padding: 30px;
- * 全文字体 font-family: ptima-Regular;
- * 英文换行 word-break: break-all;
- */
+> 📷 截图待补充：自定义样式编辑界面，或同一篇文章修改风格前后的对比。
 
+<!-- 截图上传至 assets/screenshots/custom-style.png 后，取消下一行的注释即可显示。 -->
+<!-- ![自定义 Markdown 排版风格](assets/screenshots/custom-style.png) -->
 
-#nice {
-  line-height: 1.75;
-  color: #595959;
-  letter-spacing:2px;
-  font-family: LXGW WenKai;
-  
-  background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%);
-  background-size: 20px 20px;
-  background-position:center center;
-}
+### 小红书图文长图
 
+文章自动生成首页封面与后续内容页，可在分页预览中继续调整。
 
+> 📷 截图待补充：小红书排版工作区，建议展示首页封面、正文分页和顶部调整工具。
 
+<!-- 截图上传至 assets/screenshots/xiaohongshu-preview.png 后，取消下一行的注释即可显示。 -->
+<!-- ![小红书封面与图文分页预览](assets/screenshots/xiaohongshu-preview.png) -->
 
-/* 段落，下方未标注标签参数均同此处
- * 上边距 margin-top: 5px;
- * 下边距 margin-bottom: 5px;
- * 行高 line-height: 26px;
- * 对齐 text-align: left;
- * 颜色 color: #3e3e3e;
- * 字体大小 font-size: 14px;
- * 首行缩进 text-indent: 2em;
- */
+> 📷 效果图待补充：将导出的封面和 1～2 张正文图片拼在一起，展示最终发布效果。
 
+<!-- 图片上传至 assets/screenshots/xiaohongshu-output.png 后，取消下一行的注释即可显示。 -->
+<!-- ![小红书图文导出效果](assets/screenshots/xiaohongshu-output.png) -->
 
+## 如何使用
 
-#nice p {
-  font-size: 15px;
-  word-spacing: 3px;
-  letter-spacing: 2px
-}
-/* 一级标题 */
-#nice h1 {  
-  color: RGB(242,121,121);
-}
+1. 在编辑区输入或粘贴 Markdown 内容。
+2. 选择主题、字体与排版密度；需要更细致的风格调整时，修改自定义 CSS。
+3. 发布文字内容时，使用对应平台的复制功能，将排版结果粘贴到目标编辑器。
+4. 制作小红书图文时，点击右侧「小红书排版」，查看封面与分页，按需调整样式和图片大小。
+5. 点击「下载全部 ZIP」，解压后获得按顺序排列的 PNG 图片。
 
-/* 一级标题内容 */
-#nice h1 .content {
-  font-size: 25px;
-  border-bottom: 2px solid RGB(242,121,121);
-}
+建议使用最新版 Chrome。导出含网络图片的内容时，图片地址需要支持跨域读取；不同发布平台对样式的支持存在差异，发布前请检查最终效果。
 
-/* 二级标题 */
-#nice h2 {
-}
-/* 二级标题内容 */
-#nice h2 .content {
-  background-color: RGB(242,121,128);
-  color: #FFF;
-  padding: 1px 11px;
-  border-radius: 3px;
-}
-/* 二级标题修饰 请参考有实例的主题 */
-#nice h2:after {
-}
+## 本地运行与部署
 
-/* 三级标题 */
-#nice h3 {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-}
+使用 Node.js 22 和 Yarn 1.22.22 安装依赖：
 
-/* 三级标题内容 */
-#nice h3 .content {
-  
-  font-size: 18px;
-  color: #595959;
-  border-bottom: 1px solid RGB(242,121,121);
-}
-
-/* 三级标题修饰 请参考有实例的主题 */
-#nice h3:after {}
-
-/* 无序列表整体样式
- * list-style-type: square|circle|disc;
- */
-#nice ul {
-}
-/* 有序列表整体样式
- * list-style-type: upper-roman|lower-greek|lower-alpha;
- */
-#nice ol {
-}
-/* 列表内容，不要设置li
- */
-#nice li section {
-}
-/* 引用
-   * 左边缘颜色 border-left-color:black;
-   * 背景色 background:gray;
-   */
-#nice .multiquote-1 {
-    font-style: normal;
-    border-left: none;
-    padding: 1px 1px;
-    line-height: 1.75;
-    border-radius: 4px;
-    color: #353535;
-    background: #f5f5f5;
-}
-
-#nice .multiquote-1:before {
-    content: "”";
-    display: block;
-    font-size: 2em;
-    color: rgb(248, 57, 41);
-    font-family: Arial, serif;
-    line-height: 1em;
-    font-weight: 700;
-}
-
-/* 引用文字 */
-#nice .multiquote-1 p {
-    color: #353535;
-    font-size: 16px;
-    margin: 0 10px;
-    display: block;
-}
-
-#nice .multiquote-1:after {
-    content: "”";
-    float: right;
-    display: block;
-    font-size: 2em;
-    color: rgb(248, 57, 41);
-    font-family: Arial, serif;
-    line-height: 1em;
-    font-weight: 700;
-}
-
-
-
-/* 链接 
- * border-bottom: 1px solid #009688;
- */
-#nice a {
-}
-/* 加粗 */
-#nice strong {
-  color: #3594F7;
-  font-weight: bold;
-}
-
-#nice strong::after {
-  content: '';
-}
-
-/* 斜体 */
-#nice em {
-  font-style: normal;
-  color: #3594F7;
-  font-weight:bold;
-}
-
-/* 加粗斜体 */
-#nice em strong {
-  color: #3594F7;
-}
-
-/* 删除线 */
-#nice del {
-  color: #3594F7;
-}
-
-
-/* 分隔线
-* 粗细、样式和颜色
-* border-top: 1px solid #3e3e3e;
-*/
-#nice hr {
-  border-top: 1px dashed #dddddd;
-}
-/* 图片
-* 宽度 width: 80%;
-* 居中 margin: 0 auto;
-* 居左 margin: 0 0;
-*/
-#nice img {
-  border-radius: 10px;
-  border: 1px solid #F27979;
-}
-/* 图片描述文字 */
-#nice figcaption {
-}
-/* 行内代码 */
-#nice p code, #nice li code {
-}
-/* 非微信代码块
- * 代码块不换行 display: -webkit-box !important;
- * 代码块换行 display: block;
- */
-#nice pre code {
-}
-/*
-   * 表格内的单元格
-   * 字体大小 font-size: 16px;
-   * 边框 border: 1px solid #ccc;
-   * 内边距 padding: 5px 10px;
-   */
-#nice table tr th,
-#nice table tr td {
-    font-size: 16px;
-    color: #645647;
-}
-
-#nice table tr th {
-    color: #353535;
-    background-color: #dbd9d8;
-}
-
-#nice .footnotes {
-    font-size: 16px;
-}
-/* 脚注文字 */
-#nice .footnote-word {
-}
-/* 脚注上标 */
-#nice .footnote-ref {
-}
-/* "参考资料"四个字 
- * 内容 content: "参考资料";
- */
-#nice .footnotes-sep:before {
-}
-/* 参考资料编号 */
-#nice .footnote-num {
-}
-/* 参考资料文字 */
-#nice .footnote-item p { 
-}
-/* 参考资料解释 */
-#nice .footnote-item p em {
-}
-/* 行间公式
- * 最大宽度 max-width: 300% !important;
- */
-#nice .block-equation svg {
-}
-/* 行内公式
- */
-
-
+```bash
+yarn install --frozen-lockfile
+NODE_OPTIONS=--openssl-legacy-provider yarn start
 ```
-### 内置主题
-目前内置原版所有主题，可在编辑器页面顶部主题菜单中查看，如下所示：
 
-- 默认主题 `@zhning12`
-- 山吹 `@ElyhG`
-- [蔷薇紫](https://mp.weixin.qq.com/s/x0xqSpQixW2xj5qXCgWSyA) `@HeyRain`
-- [全栈蓝](https://mp.weixin.qq.com/s/_lO3cd0FcF0Dg3TRnHPdwg) `@Nealyang`
-- [凝夜紫](https://mp.weixin.qq.com/s/0IDhUGxZtMDFGD-Z9Ij_Cg) `@童欧巴` : 适配微信以及Safari的深色模式。“凝夜紫”，寓意在深色模式中也可以发光。
-- [萌绿](https://mp.weixin.qq.com/s/iK3r9I28NMWApEydH046-w) `@koala`
-- [极简黑](https://mp.weixin.qq.com/s/6UQmAhyXQY6AaYcyd1npIg) `@小鱼` : 公众号自律神仙ScarSu同款~
-- [橙心](https://mp.weixin.qq.com/s?__biz=MzIwNTA4NzI1Mw==&mid=2247485062&amp;idx=1&amp;sn=0eaa314bb165c71a8f57c8baf4226f57&source=41#wechat_redirect) `@zhning12`
-- 墨黑 `@May和ev`
-- 姹紫 `@djmaxwow`
-- [绿意](https://mp.weixin.qq.com/s/gpancJ62Dkd4ccXzFg2g5Q) `@夜尽天明`
-- 嫩青 `@画手`
-- [WeChat-Format](https://mp.weixin.qq.com/s?__biz=MzIwNTA4NzI1Mw==&mid=2247485061&amp;idx=1&amp;sn=36047ec080d1daaf63d733d18e546ba7&source=41#wechat_redirect) `@画手`
-- [兰青](https://mp.weixin.qq.com/s/iL8xlH0I3yOEOrhcBqc0kg) `@Krahets`
-- [前端之巅同款](https://mp.weixin.qq.com/s/sSJwPflpzan1R_7kmBRwmQ) `@HeyRain`
-- 极客黑 `@hyper-xx`
-- 红绯 `@HeyRain`
-- [蓝莹](https://mp.weixin.qq.com/s/OfRQaBe3XVXXjE7f84nSwA) `@谭淞宸`
-- [科技蓝](https://mp.weixin.qq.com/s/hEQA4GEFycBjvScko4DeqQ) `@夜尽天明`
-- [简](https://mp.weixin.qq.com/s/JawcVvG_y8igDK5reRDktg) `@aco`
+生产构建：
+
+```bash
+NODE_OPTIONS=--openssl-legacy-provider PUBLIC_URL=. yarn build
+```
+
+构建产物位于 `docs/`，可部署到静态网站托管服务。仓库配置了 GitHub Pages 工作流，合并到 `main` 后会从最新源码构建并发布。
+
+## 项目来源与致谢
+
+本项目由 [askfanxiaojun](https://github.com/askfanxiaojun) 在 Fork 版本 [amiaoapp/mdtohtml](https://github.com/amiaoapp/mdtohtml) 的基础上继续开发，原始项目为 [mdnice/markdown-nice](https://github.com/mdnice/markdown-nice)。感谢原项目及各 Fork 版本的所有贡献者。
+
+本项目遵循 [GPL-3.0](LICENSE) 开源协议。欢迎通过 [Issues](https://github.com/askfanxiaojun/mdnice/issues) 提出问题和建议，或提交 Pull Request。
