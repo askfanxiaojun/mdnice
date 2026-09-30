@@ -1,48 +1,77 @@
-name: Deploy GitHub Pages
+name: Build and Deploy GitHub Pages
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Prepare static site
-        run: |
-          unzip -q mdnice.zip 'mdnice/*' -d _site_archive
-          mkdir site
-          cp -R _site_archive/mdnice/. site/
-          find site -name .DS_Store -delete
-          touch site/.nojekyll
-          test -f site/index.html
-          find site/static/js -maxdepth 1 -name 'main.*.chunk.js' -print -quit | grep -q .
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Install dependencies
+        run: |
+          npm install --global yarn@1.22.22
+          yarn install --frozen-lockfile --non-interactive
+
+      - name: Test Markdown line breaks
+        run: yarn test --runInBand src/utils/helper.test.js
+        env:
+          CI: true
+
+      - name: Build static site from source
+        run: yarn build
+        env:
+          # The legacy webpack 4 build requires the OpenSSL legacy provider.
+          NODE_OPTIONS: --openssl-legacy-provider
+          PUBLIC_URL: .
+
+      - name: Prepare Pages artifact
+        run: |
+          touch docs/.nojekyll
+          test -f docs/index.html
+          find docs/static/js -maxdepth 1 -name 'main.*.chunk.js' -print -quit | grep -q .
 
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: site
+          path: docs
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
       - name: Deploy
         id: deployment

@@ -215,6 +215,11 @@
       ]
     ],
     "env": {
+      "test": {
+        "presets": [
+          "react-app"
+        ]
+      },
       "production": {
         "plugins": [
           [

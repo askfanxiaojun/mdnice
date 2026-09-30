@@ -54,6 +54,7 @@ export const deCode = (str) => {
 // 专门微信代码高亮的解析器
 export const markdownParserWechat = new MarkdownIt({
   html: true,
+  breaks: true, // 单次回车换行，空行仍用于分段
   highlight: (str, lang) => {
     const text = str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const lines = text.split("\n");
@@ -96,6 +97,7 @@ markdownParserWechat
 // 普通解析器，代码高亮用highlight
 export const markdownParser = new MarkdownIt({
   html: true,
+  breaks: true, // 与微信代码主题保持相同的换行行为
   highlight: (str, lang) => {
     // 加上custom则表示自定义样式，而非微信专属，避免被remove pre
     if (lang && highlightjs.getLanguage(lang)) {
