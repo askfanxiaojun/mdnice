@@ -16,20 +16,35 @@ const render = (parser, markdown) => {
         const result = render(parser, markdown);
         expect(result.querySelectorAll("p")).toHaveLength(1);
         expect(result.querySelectorAll("p br")).toHaveLength(1);
+        expect(result.querySelectorAll("p .nice-manual-break")).toHaveLength(1);
         expect(result.textContent).toContain("第一行");
         expect(result.textContent).toContain("第二行");
       });
+    });
+
+    it("连续回车行均标记手动换行，单行长文本不生成额外间距", () => {
+      expect(render(parser, "一\n二\n三").querySelectorAll(".nice-manual-break")).toHaveLength(2);
+      expect(render(parser, "很长的正文".repeat(100)).querySelectorAll(".nice-manual-break")).toHaveLength(0);
+    });
+
+    it("加粗内部的回车仍保留文字格式和换行标记", () => {
+      const result = render(parser, "**第一行\n第二行**");
+      expect(result.querySelectorAll("strong .nice-manual-break")).toHaveLength(1);
+      expect(result.querySelector("strong").textContent).toContain("第二行");
     });
 
     it("空行仍然分成独立段落", () => {
       const result = render(parser, "第一段\n\n第二段");
       expect(result.querySelectorAll("p")).toHaveLength(2);
       expect(result.querySelectorAll("br")).toHaveLength(0);
+      expect(result.querySelectorAll(".nice-manual-break")).toHaveLength(0);
     });
 
     it("显式 Markdown 换行不会生成重复换行", () => {
       ["第一行  \n第二行", "第一行\\\n第二行"].forEach((markdown) => {
-        expect(render(parser, markdown).querySelectorAll("br")).toHaveLength(1);
+        const result = render(parser, markdown);
+        expect(result.querySelectorAll("br")).toHaveLength(1);
+        expect(result.querySelectorAll(".nice-manual-break")).toHaveLength(1);
       });
     });
 
@@ -44,6 +59,7 @@ const render = (parser, markdown) => {
       const result = render(parser, "```\nfirst\nsecond\n```");
       expect(result.querySelectorAll("pre")).toHaveLength(1);
       expect(result.querySelectorAll("br")).toHaveLength(0);
+      expect(result.querySelectorAll(".nice-manual-break")).toHaveLength(0);
       expect(result.textContent).toContain("first");
       expect(result.textContent).toContain("second");
     });
@@ -54,6 +70,7 @@ const render = (parser, markdown) => {
       expect(result.querySelectorAll("table")).toHaveLength(1);
       expect(result.querySelectorAll("li")).toHaveLength(2);
       expect(result.querySelectorAll("br")).toHaveLength(0);
+      expect(result.querySelectorAll(".nice-manual-break")).toHaveLength(0);
     });
   });
 });

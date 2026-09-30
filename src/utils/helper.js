@@ -11,6 +11,7 @@ import markdownItLinkfoot from "./markdown-it-linkfoot";
 import markdownItImageFlow from "./markdown-it-imageflow";
 import highlightjs from "./langHighlight";
 import markdownItLiReplacer from "./markdown-it-li";
+import markdownItLineBreak from "./markdown-it-line-break";
 
 export const axiosGithub = axios.create({
   baseURL: "https://api.github.com",
@@ -79,6 +80,7 @@ export const markdownParserWechat = new MarkdownIt({
 });
 
 markdownParserWechat
+  .use(markdownItLineBreak) // 为手动换行增加间距
   .use(markdownItSpan) // 在标题标签中添加span
   .use(markdownItRemovepre) // 移除代码段中的 pre code
   .use(markdownItMath) // 数学公式
@@ -117,6 +119,7 @@ export const markdownParser = new MarkdownIt({
 });
 
 markdownParser
+  .use(markdownItLineBreak) // 与微信代码主题保持一致
   .use(markdownItSpan) // 在标题标签中添加span
   .use(markdownItMath) // 数学公式
   .use(markdownItLinkfoot) // 修改脚注
