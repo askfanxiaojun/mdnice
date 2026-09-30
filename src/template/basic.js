@@ -25,6 +25,15 @@ export default `/*默认样式，最佳实践*/
   color: black;
 }
 
+/*手动换行：自动折行保持原行距，回车换行额外增加半个字号的间距。
+ * 使用真实元素，复制时可内联样式，小红书分页导出也能保留。
+ */
+#nice .nice-manual-break {
+  display: block;
+  height: 0.5em;
+  line-height: 0;
+}
+
 /*标题*/
 #nice h1,
 #nice h2,
